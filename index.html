@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+    <title>Matador de Mostro</title>
+  </head>
+  <body>
+
+    <div id="app">
+      <section id="painel-combate">
+      <div class="container">
+      
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div class="panel">
+              <h5 class="text-center">Jogador</h5>
+              <div class="barra-progresso">
+                <div class="progresso" :class="{ perigo: HPPerigoJ}" :style="{ width: `${HPJogador}%`}"></div>
+              </div>
+              <div>
+                <p class="text-HP">{{ HPJogador }}%</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <div class="panel">
+              <h5 class="text-center">Monstro</h5>
+              <div class="barra-progresso">
+                <div class="progresso" :class="{ perigo: HPPerigoM}" :style="{ width: `${HPMostro}%`}"></div>
+              </div>
+              <div>
+                <p class="text-HP">{{ HPMostro }}%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-12 col-md-12">
+          <div class="text-center alert alert-success"role="alert" v-if="jogadorGanho">
+            <h4>Você ganhou !!!</h4>
+          </div>
+          <div class="text-center alert alert-danger" role="alert" v-else-if="monstroGanho">
+            <h4>Você perdeu !</h4>
+          </div>
+        </div>
+
+        <template v-if="ocultar">
+          <div class="panel" v-if="!novoJogo">
+            <button type="button" class="btn btn-danger" @click="atacaMonstro">ATAQUE</button>
+            <button type="button" class="btn btn-warning" @click="especial">ESPECIAL</button>
+            <button type="button" class="btn btn-success" :disabled='isDisabled' @click="curar">{{ text }}</button>
+            <button type="button" class="btn btn-secondary" @click="zeraJogo">DESISTIR</button>
+          </div>
+
+          <div class="panel" v-else>
+            <div class="btn-start">
+              <button type="button" class="btn btn-primary" @click="novoJogo = !novoJogo">INICIAR NOVO JOGO</button>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="panel">
+            <div class="btn-start">
+              <button type="button" class="btn btn-primary" @click="zeraJogo">INICIAR NOVO JOGO</button>
+            </div>
+          </div>
+        </template>
+
+        <div class="panel" v-show="!novoJogo">
+          <h3 class="text-center">Historico de Batalha</h3>
+
+          <div class="logs-batalha">
+            <template v-for="i in logAtaque">
+              <div v-if="i.log == 'jogador'" class="alert alert-success"role="alert">
+                <b>{{ i.play }}</b> atingiu o <b>monstro</b> com <b>{{ i.value }}</b>
+              </div>
+              <div v-else-if="i.log == 'monstro'" class="alert alert-danger" role="alert">
+                <b>{{ i.play }}</b> atingiu o <b>jogador</b> com <b>{{ i.value }}</b>
+              </div>
+              <div v-else-if="i.log == 'especial'" class="alert alert-warning" role="alert">
+                <b>{{ i.play }}</b> soltou o especia no <b>monstro</b> com <b>{{ i.value }}</b>
+              </div>
+              <div v-else-if="i.log == 'curar'" class="alert alert-info" role="alert">
+                <b>{{ i.play }}</b> se curou com <b>{{ i.value }}</b>
+              </div>
+            </template>
+          </div>
+        </div>
+        
+      </div>
+      </section>
+    </div>
+
+    <!-- JavaScript (Opcional) -->
+    <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" 
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" 
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
